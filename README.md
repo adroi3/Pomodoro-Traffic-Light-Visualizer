@@ -3,11 +3,12 @@
 ## Installation Instructions
 
 It is configured to use Visual Studio Code as an IDE.
-If you want to debug it, you must run following npm commands
+
+If you want to debug it, you must run following npm commands:
 - `npm install -g typescript`
 - `npm install -g rimraf`
 
-The following user settings are also helpful for hiding unnecessary files
+The following user settings are also helpful for hiding unnecessary files:
 ```json
 {
     "files.exclude": {
