@@ -61,4 +61,5 @@ typings/
 .next
 
 #TypeScript output folder
-/ts_output/**
+**/ts_output/**/*.js
+**/ts_output/**/*.map

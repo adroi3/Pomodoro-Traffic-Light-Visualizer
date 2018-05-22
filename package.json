@@ -1,0 +1,19 @@
+{
+  "name": "pomodoro-traffic-light-visualizer-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-service/issues"
+  },
+  "homepage": "https://github.com/pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-service#readme"
+}
