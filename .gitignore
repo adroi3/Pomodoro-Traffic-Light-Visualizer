@@ -61,4 +61,4 @@ typings/
 .next
 
 #TypeScript output folder
-ts_output/
+/ts_output/**
