@@ -7,7 +7,7 @@ If you want to debug it, you must run following npm commands
 - `npm install -g typescript`
 - `npm install -g rimraf`
 
-The following user settings are also helpful for hide unnecessary files
+The following user settings are also helpful for hiding unnecessary files
 ```json
 {
     "files.exclude": {
