@@ -15,12 +15,17 @@ class TrafficLightVisualizerNodeService implements TrafficLightVisualizerService
         if (this.timerId === null)
             this.startPomodoro();
         else
-            clearTimeout(this.timerId);
+            this.stopPomodoro();
     }
 
     // TODO @David
     private startPomodoro() {
-        this.timerId = setTimeout(() => {
+        this.timerId = setInterval(() => {
         }, this.interval);
+    }
+
+    // TODO @David Lösche aus Restservice raus
+    private stopPomodoro() {
+        clearInterval(this.timerId);
     }
 }
