@@ -4,7 +4,8 @@
         "module": "amd",
         "sourceMap": true,
         "allowSyntheticDefaultImports": true,
-        "outDir": "ts_output"
+        "outDir": "ts_output",
+        "strictNullChecks": true,
     },
     "exclude": [
         "node_modules",
