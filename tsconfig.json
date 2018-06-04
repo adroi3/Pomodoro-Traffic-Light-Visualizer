@@ -1,9 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "amd",
         "sourceMap": true,
-        "allowSyntheticDefaultImports": true,
         "outDir": "ts_output",
         "strictNullChecks": true,
     },
