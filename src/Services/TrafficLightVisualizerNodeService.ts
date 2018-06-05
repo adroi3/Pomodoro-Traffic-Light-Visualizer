@@ -8,7 +8,7 @@ export namespace Services {
         private timeoutForReachingYellow: number;
         private timeoutForReachingGreen: number;
 
-        private timerIds: TimerIds = new TimerIds();
+        private timers: Timers = new Timers();
 
         constructor(timeoutForReachingYellow: number, timeoutForReachingGreen: number) {
             this.timeoutForReachingYellow = timeoutForReachingYellow;
@@ -22,7 +22,7 @@ export namespace Services {
         }
 
         public startOrStopPomodoroFor(user: User): void {
-            if (this.timerIds[user] === null)
+            if (this.timers[user] === null)
                 this.startPomodoro(user);
             else
                 this.stopPomodoro(user);
@@ -31,28 +31,29 @@ export namespace Services {
         private startPomodoro(user: User): void {
             this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightStatus.Red);
 
-            this.timerIds[user] = setTimeout(() => {
+            this.timers[user] = setTimeout(() => {
                 this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightStatus.Yellow);
 
-                this.timerIds[user] = setTimeout(() => {
+                if (this.timers[user] === null)
+                    return;
+
+                this.timers[user] = setTimeout(() => {
                     this.stopPomodoro(user);
                 }, this.timeoutForReachingGreen);
-
             }, this.timeoutForReachingYellow);
         }
 
         private stopPomodoro(user: User): void {
-            clearTimeout(this.timerIds[user] as number);
+            clearTimeout(this.timers[user]);
 
-            this.timerIds[user] = null;
-
+            this.timers[user] = null;
             this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightStatus.Green);
         }
     }
 
-    class TimerIds {
-        [User.First]: number | null = null;
-        [User.Second]: number | null = null;
+    class Timers {
+        [User.First]: any | null = null;
+        [User.Second]: any | null = null;
     }
 
 }
