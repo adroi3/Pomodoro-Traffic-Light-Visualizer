@@ -1,38 +1,36 @@
 import { TrafficLightVisualizerService } from "../../api/TrafficLightVisualizerService";
-import { TrafficLightVisualizerPlugin, TrafficLightStatus, User } from "../../api/TrafficLightVisualizerPlugin";
+import { TrafficLightVisualizerPlugin } from "../../api/TrafficLightVisualizerPlugin";
 
 export namespace Services {
 
-    export class TrafficLightVisualizerNodeService implements TrafficLightVisualizerService {
-        private trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin;
+    export class TrafficLightVisualizerNodeService implements TrafficLightVisualizerService.TrafficLightVisualizerService {
+        private trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin;
         private timeoutForReachingYellow: number;
         private timeoutForReachingGreen: number;
 
         private timers: Timers = new Timers();
 
-        constructor(timeoutForReachingYellow: number, timeoutForReachingGreen: number) {
+        public startsWith(trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin, timeoutForReachingYellow: number, timeoutForReachingGreen: number): void {
+            
+            this.trafficLightVisualizerPlugin = trafficLightVisualizerPlugin;
             this.timeoutForReachingYellow = timeoutForReachingYellow;
             this.timeoutForReachingGreen = timeoutForReachingGreen;
-        }
-
-        public startsWith(trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin): void {
-            this.trafficLightVisualizerPlugin = trafficLightVisualizerPlugin;
 
             this.trafficLightVisualizerPlugin.startsWith(this);
         }
 
-        public startOrStopPomodoroFor(user: User): void {
+        public startOrStopPomodoroFor(user: TrafficLightVisualizerPlugin.User): void {
             if (this.timers[user] === null)
                 this.startPomodoro(user);
             else
                 this.stopPomodoro(user);
         }
 
-        private startPomodoro(user: User): void {
-            this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightStatus.Red);
+        private startPomodoro(user: TrafficLightVisualizerPlugin.User): void {
+            this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightVisualizerPlugin.TrafficLightStatus.Red);
 
             this.timers[user] = setTimeout(() => {
-                this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightStatus.Yellow);
+                this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightVisualizerPlugin.TrafficLightStatus.Yellow);
 
                 if (this.timers[user] === null)
                     return;
@@ -43,17 +41,16 @@ export namespace Services {
             }, this.timeoutForReachingYellow);
         }
 
-        private stopPomodoro(user: User): void {
+        private stopPomodoro(user: TrafficLightVisualizerPlugin.User): void {
             clearTimeout(this.timers[user]);
 
             this.timers[user] = null;
-            this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightStatus.Green);
+            this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightVisualizerPlugin.TrafficLightStatus.Green);
         }
     }
 
     class Timers {
-        [User.First]: any | null = null;
-        [User.Second]: any | null = null;
+        [TrafficLightVisualizerPlugin.User.First]: any | null = null;
+        [TrafficLightVisualizerPlugin.User.Second]: any | null = null;
     }
-
 }

@@ -1,8 +1,16 @@
+import { TrafficLightVisualizerService } from "./api/TrafficLightVisualizerService";
+import { TrafficLightVisualizerPlugin } from "./api/TrafficLightVisualizerPlugin";
+
 import { Services } from "./src/Services/TrafficLightVisualizerNodeService";
 import { TestPlugins } from "./src/TestPlugins/TrafficLightVisualizerPrintToCommandLinePlugin";
 
-let trafficLightVisualizerNodeService = new Services.TrafficLightVisualizerNodeService(2000, 1000);
+TODO
+import trafficLightVisualizerServiceConfiguration = require('./traffic-light-visualizer-service-config.json');
 
-let trafficLightVisualizerPrintToCommandLinePlugin = new TestPlugins.TrafficLightVisualizerPrintToCommandLinePlugin();
+console.debug(trafficLightVisualizerServiceConfiguration);
 
-trafficLightVisualizerNodeService.startsWith(trafficLightVisualizerPrintToCommandLinePlugin);
+let trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService();
+
+let trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin = new TestPlugins.TrafficLightVisualizerPrintToCommandLinePlugin();
+
+trafficLightVisualizerService.startsWith(trafficLightVisualizerPlugin, 5, 6);

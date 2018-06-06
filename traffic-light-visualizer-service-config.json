@@ -1,0 +1,7 @@
+{
+    "serviceOptions": {
+        "path": "./src/Services/TrafficLightVisualizerNodeService",
+        "namespace": "Services"
+        
+    }
+}
