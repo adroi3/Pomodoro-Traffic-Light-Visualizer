@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-service/issues"
   },
-  "homepage": "https://github.com/pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-service#readme"
+  "homepage": "https://github.com/pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-service#readme",
+  "dependencies": {
+    "@types/node": "^10.3.1"
+  }
 }

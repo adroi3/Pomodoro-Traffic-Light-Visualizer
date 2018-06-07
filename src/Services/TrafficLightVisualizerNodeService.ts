@@ -42,15 +42,17 @@ export namespace Services {
         }
 
         private stopPomodoro(user: TrafficLightVisualizerPlugin.User): void {
-            clearTimeout(this.timers[user]);
+            if (this.timers[user] !== null) {
+                clearTimeout(this.timers[user] as NodeJS.Timer);
+                this.timers[user] = null;
+            }
 
-            this.timers[user] = null;
             this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightVisualizerPlugin.TrafficLightStatus.Green);
         }
     }
 
     class Timers {
-        [TrafficLightVisualizerPlugin.User.First]: any | null = null;
-        [TrafficLightVisualizerPlugin.User.Second]: any | null = null;
+        [TrafficLightVisualizerPlugin.User.First]: NodeJS.Timer | null = null;
+        [TrafficLightVisualizerPlugin.User.Second]: NodeJS.Timer | null = null;
     }
 }

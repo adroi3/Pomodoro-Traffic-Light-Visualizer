@@ -1,7 +1,14 @@
 {
     "serviceOptions": {
-        "path": "./src/Services/TrafficLightVisualizerNodeService",
-        "namespace": "Services"
-        
+        "path": "./ts_output/src/Services/TrafficLightVisualizerNodeService",
+        "namespace": "Services",
+        "class": "TrafficLightVisualizerNodeService",
+        "timeoutForReachingYellow": 10,
+        "timeoutForReachingGreen": 100
+    },
+    "pluginOptions": {
+        "path": "./ts_output/src/TestPlugins/TrafficLightVisualizerPrintToCommandLinePlugin",
+        "namespace": "TestPlugins",
+        "class": "TrafficLightVisualizerPrintToCommandLinePlugin"
     }
 }
