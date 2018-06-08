@@ -17,10 +17,6 @@ export namespace TestPlugins {
             console.debug(`${TrafficLightVisualizerPlugin.TrafficLightStatus[trafficLightStatus]} ${currentDateNow - this.previousDateNow}`);
 
             this.previousDateNow = currentDateNow;
-
-            if (trafficLightStatus === 1) {
-                this.trafficLightVisualizerService.startOrStopPomodoroFor(user);
-            }
         }
     }
 }
