@@ -5,6 +5,7 @@
 It is configured to use Visual Studio Code as an IDE.
 
 If you want to configure it, you must run the following npm commands:
+- `npm install`
 - `npm install -g typescript`
 - `npm install -g rimraf`
 
