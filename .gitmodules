@@ -1,3 +1,4 @@
 [submodule "api"]
 	path = api
 	url = git@github.com:pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-api.git
+	branch = master
