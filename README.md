@@ -12,8 +12,7 @@ The following user settings are also helpful for hiding unnecessary files:
 ```json
 {
     "files.exclude": {
-        "**/.git": true,
-        "**/ts_output": true
+        "**/.git": true
     }
 }
 ```
