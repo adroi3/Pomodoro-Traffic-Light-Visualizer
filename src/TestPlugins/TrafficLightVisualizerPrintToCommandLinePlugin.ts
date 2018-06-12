@@ -3,7 +3,7 @@ import { TrafficLightVisualizerService } from "../../api/TrafficLightVisualizerS
 
 export namespace TestPlugins {
     export class TrafficLightVisualizerPrintToCommandLinePlugin implements TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin {
-        private trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService
+        private trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService;
         private previousDateNow: number = Date.now();
 
         public startsWith(trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService): void {
