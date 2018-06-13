@@ -1,5 +1,5 @@
-import { TrafficLightVisualizerPlugin } from "../../api/TrafficLightVisualizerPlugin";
-import { TrafficLightVisualizerService } from "../../api/TrafficLightVisualizerService";
+import { TrafficLightVisualizerPlugin } from "../../support/api/TrafficLightVisualizerPlugin";
+import { TrafficLightVisualizerService } from "../../support/api/TrafficLightVisualizerService";
 
 export namespace TestPlugins {
     export class TrafficLightVisualizerPrintToCommandLinePlugin implements TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin {

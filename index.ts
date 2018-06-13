@@ -1,5 +1,5 @@
-import { TrafficLightVisualizerService } from "./api/TrafficLightVisualizerService";
-import { TrafficLightVisualizerPlugin } from "./api/TrafficLightVisualizerPlugin";
+import { TrafficLightVisualizerService } from "./support/api/TrafficLightVisualizerService";
+import { TrafficLightVisualizerPlugin } from "./support/api/TrafficLightVisualizerPlugin";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
 

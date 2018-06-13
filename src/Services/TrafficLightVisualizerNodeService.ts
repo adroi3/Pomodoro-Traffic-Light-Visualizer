@@ -1,5 +1,5 @@
-import { TrafficLightVisualizerService } from "../../api/TrafficLightVisualizerService";
-import { TrafficLightVisualizerPlugin } from "../../api/TrafficLightVisualizerPlugin";
+import { TrafficLightVisualizerService } from "../../support/api/TrafficLightVisualizerService";
+import { TrafficLightVisualizerPlugin } from "../../support/api/TrafficLightVisualizerPlugin";
 
 export namespace Services {
 
@@ -16,7 +16,8 @@ export namespace Services {
             this.timeoutForReachingYellow = timeoutForReachingYellow;
             this.timeoutForReachingGreen = timeoutForReachingGreen;
 
-            this.trafficLightVisualizerPlugin.startsWith(this);
+            // TODO @David
+            this.trafficLightVisualizerPlugin.startsWith(this, { });
         }
 
         public startOrStopPomodoroFor(user: TrafficLightVisualizerPlugin.User): void {
