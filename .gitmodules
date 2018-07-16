@@ -2,3 +2,7 @@
 	path = support/api
 	url = git@github.com:pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-api.git
 	branch = master
+[submodule "arduino-plugin"]
+	path = support/arduino-plugin
+	url = git@github.com:pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-arduino-plugin.git
+	branch = master

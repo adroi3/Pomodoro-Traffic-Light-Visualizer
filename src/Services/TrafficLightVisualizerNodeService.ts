@@ -14,7 +14,8 @@ export namespace Services {
             trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<TOptions>,
             timeoutForReachingYellow: number,
             timeoutForReachingGreen: number,
-            pluginOptions: TOptions): void {
+            pluginOptions: TOptions,
+            onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady): void {
             
             this.trafficLightVisualizerPlugin = trafficLightVisualizerPlugin;
             this.timeoutForReachingYellow = timeoutForReachingYellow;
@@ -23,7 +24,7 @@ export namespace Services {
             this.trafficLightVisualizerPlugin.startsWith(
                 this,
                 pluginOptions,
-                () => { });
+                onArduinoIsReady);
         }
 
         public startOrStopPomodoroFor(user: TrafficLightVisualizerPlugin.User): void {

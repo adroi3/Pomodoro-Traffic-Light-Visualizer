@@ -19,7 +19,7 @@ export namespace TestPlugins {
         }
         
         public setTrafficLightFor(user: TrafficLightVisualizerPlugin.User, trafficLightStatus: TrafficLightVisualizerPlugin.TrafficLightStatus): void {
-            let currentDateNow = Date.now();
+            const currentDateNow = Date.now();
 
             console.debug(`${TrafficLightVisualizerPlugin.TrafficLightStatus[trafficLightStatus]} ${currentDateNow - this.previousDateNow}`);
 

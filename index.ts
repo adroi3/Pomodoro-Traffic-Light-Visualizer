@@ -1,16 +1,23 @@
-import { TrafficLightVisualizerService } from "./support/api/TrafficLightVisualizerService";
 import { TrafficLightVisualizerPlugin } from "./support/api/TrafficLightVisualizerPlugin";
+
+import { Plugins } from "./support/arduino-plugin/src/Plugins/TrafficLightVisualizerArduinoPlugin"
+
+import { Services } from "./src/Services/TrafficLightVisualizerNodeService";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
 
 const trafficLightVisualizerConfiguration = new TrafficLightVisualizerConfiguration();
 
-const trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<null> = new trafficLightVisualizerConfiguration.serviceOptions.class();
+const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService<Plugins.TrafficLightVisualizerArduinoPluginOptions>();
 
-const trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<null> = new trafficLightVisualizerConfiguration.pluginOptions.class();
+const trafficLightVisualizerPlugin = new Plugins.TrafficLightVisualizerArduinoPlugin();
 
 trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen,
-    null);
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMilliseconds,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMilliseconds,
+    {
+        port: trafficLightVisualizerConfiguration.serviceOptions.port,
+        baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
+    },
+    () => trafficLightVisualizerService.startOrStopPomodoroFor(TrafficLightVisualizerPlugin.User.First));
