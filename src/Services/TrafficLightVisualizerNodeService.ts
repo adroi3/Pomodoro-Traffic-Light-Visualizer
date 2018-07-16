@@ -3,21 +3,27 @@ import { TrafficLightVisualizerPlugin } from "../../support/api/TrafficLightVisu
 
 export namespace Services {
 
-    export class TrafficLightVisualizerNodeService implements TrafficLightVisualizerService.TrafficLightVisualizerService {
-        private trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin;
+    export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLightVisualizerService.TrafficLightVisualizerService<TOptions> {
+        private trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<TOptions>;
         private timeoutForReachingYellow: number;
         private timeoutForReachingGreen: number;
 
         private timers: Timers = new Timers();
 
-        public startsWith(trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin, timeoutForReachingYellow: number, timeoutForReachingGreen: number): void {
+        public startsWith(
+            trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<TOptions>,
+            timeoutForReachingYellow: number,
+            timeoutForReachingGreen: number,
+            pluginOptions: TOptions): void {
             
             this.trafficLightVisualizerPlugin = trafficLightVisualizerPlugin;
             this.timeoutForReachingYellow = timeoutForReachingYellow;
             this.timeoutForReachingGreen = timeoutForReachingGreen;
 
-            // TODO @David
-            this.trafficLightVisualizerPlugin.startsWith(this, { });
+            this.trafficLightVisualizerPlugin.startsWith(
+                this,
+                pluginOptions,
+                () => { });
         }
 
         public startOrStopPomodoroFor(user: TrafficLightVisualizerPlugin.User): void {

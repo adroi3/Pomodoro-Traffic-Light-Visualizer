@@ -5,11 +5,12 @@ import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerCon
 
 const trafficLightVisualizerConfiguration = new TrafficLightVisualizerConfiguration();
 
-const trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService = new trafficLightVisualizerConfiguration.serviceOptions.class();
+const trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<null> = new trafficLightVisualizerConfiguration.serviceOptions.class();
 
-const trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin = new trafficLightVisualizerConfiguration.pluginOptions.class();
+const trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<null> = new trafficLightVisualizerConfiguration.pluginOptions.class();
 
 trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
     trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen);
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen,
+    null);

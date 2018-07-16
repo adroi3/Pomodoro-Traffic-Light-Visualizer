@@ -2,12 +2,19 @@ import { TrafficLightVisualizerPlugin } from "../../support/api/TrafficLightVisu
 import { TrafficLightVisualizerService } from "../../support/api/TrafficLightVisualizerService";
 
 export namespace TestPlugins {
-    export class TrafficLightVisualizerPrintToCommandLinePlugin implements TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin {
-        private trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService;
+    export class TrafficLightVisualizerPrintToCommandLinePlugin implements TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<null> {
+        private trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<null>;
         private previousDateNow: number = Date.now();
 
-        public startsWith(trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService): void {
+        public startsWith(
+            trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<null>,
+            options: null,
+            onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady): void {
+            
             this.trafficLightVisualizerService = trafficLightVisualizerService;
+
+            onArduinoIsReady();
+
             this.trafficLightVisualizerService.startOrStopPomodoroFor(TrafficLightVisualizerPlugin.User.First);
         }
         
