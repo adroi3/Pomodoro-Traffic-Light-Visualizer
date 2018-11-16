@@ -1,5 +1,3 @@
-import { TrafficLightVisualizerPlugin } from "./support/api/TrafficLightVisualizerPlugin";
-
 import { Plugins } from "./support/arduino-plugin/src/Plugins/TrafficLightVisualizerArduinoPlugin"
 
 import { Services } from "./src/Services/TrafficLightVisualizerNodeService";
@@ -20,4 +18,4 @@ trafficLightVisualizerService.startsWith(
         port: trafficLightVisualizerConfiguration.serviceOptions.port,
         baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
     },
-    () => trafficLightVisualizerService.startOrStopPomodoroFor(TrafficLightVisualizerPlugin.User.First));
+    () => { });
