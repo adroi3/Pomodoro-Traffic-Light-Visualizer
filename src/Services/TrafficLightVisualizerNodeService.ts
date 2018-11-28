@@ -1,5 +1,6 @@
 import { TrafficLightVisualizerService } from "../../support/api/TrafficLightVisualizerService";
 import { TrafficLightVisualizerPlugin } from "../../support/api/TrafficLightVisualizerPlugin";
+import * as NodeNotifier from "node-notifier";
 
 export namespace Services {
 
@@ -9,17 +10,20 @@ export namespace Services {
         private timeoutForReachingGreen: number;
 
         private timers: Timers = new Timers();
+        private pomodoroIsOverMessage: string;
 
         public startsWith(
             trafficLightVisualizerPlugin: TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<TOptions>,
             timeoutForReachingYellow: number,
             timeoutForReachingGreen: number,
+            pomodoroIsOverMessage: string,
             pluginOptions: TOptions,
             onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady): void {
             
             this.trafficLightVisualizerPlugin = trafficLightVisualizerPlugin;
             this.timeoutForReachingYellow = timeoutForReachingYellow;
             this.timeoutForReachingGreen = timeoutForReachingGreen;
+            this.pomodoroIsOverMessage = pomodoroIsOverMessage;
 
             this.trafficLightVisualizerPlugin.startsWith(
                 this,
@@ -45,6 +49,7 @@ export namespace Services {
 
                 this.timers[user] = setTimeout(() => {
                     this.stopPomodoro(user);
+                    NodeNotifier.notify({ title: "Pomodoro Traffic Light", message: this.pomodoroIsOverMessage });
                 }, this.timeoutForReachingGreen);
             }, this.timeoutForReachingYellow);
         }

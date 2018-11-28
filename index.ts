@@ -14,8 +14,9 @@ trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
     trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMilliseconds,
     trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMilliseconds,
+    trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,
     {
         port: trafficLightVisualizerConfiguration.serviceOptions.port,
         baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
     },
-    () => { });
+    () => console.log("Traffic light visualizer started"));
