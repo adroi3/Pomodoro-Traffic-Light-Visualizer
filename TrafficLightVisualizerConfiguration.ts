@@ -1,7 +1,7 @@
 export class TrafficLightVisualizerConfiguration {
     public serviceOptions = {
-        timeoutForReachingYellowInMilliseconds: 1200000, // 20 min
-        timeoutForReachingGreenInMilliseconds: 300000, // 5 min
+        timeoutForReachingYellowInMilliseconds: 20 * 1000 * 60,
+        timeoutForReachingGreenInMilliseconds: 5 * 1000 * 60,
         port: "COM4",
         baudRate: 115200,
         pomodoroIsOverMessage: "Pomodoro is over",
