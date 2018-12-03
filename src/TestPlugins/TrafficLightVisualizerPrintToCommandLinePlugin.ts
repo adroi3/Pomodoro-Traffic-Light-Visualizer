@@ -15,10 +15,10 @@ export namespace TestPlugins {
 
             onArduinoIsReady();
 
-            this.trafficLightVisualizerService.startOrStopPomodoro(TrafficLightVisualizerPlugin.User.First);
+            this.trafficLightVisualizerService.startOrStopPomodoro();
         }
         
-        public setTrafficLight(user: TrafficLightVisualizerPlugin.User, trafficLightStatus: TrafficLightVisualizerPlugin.TrafficLightStatus): void {
+        public setTrafficLight(trafficLightStatus: TrafficLightVisualizerPlugin.TrafficLightStatus): void {
             const currentDateNow = Date.now();
 
             console.debug(`${TrafficLightVisualizerPlugin.TrafficLightStatus[trafficLightStatus]} ${currentDateNow - this.previousDateNow}`);
