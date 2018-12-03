@@ -14,7 +14,11 @@ trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
     trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMilliseconds,
     trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMilliseconds,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreak,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEnded,
     trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,
+    trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsAlmostOverMessage,
+    trafficLightVisualizerConfiguration.serviceOptions.breakIsOverMessage,
     {
         port: trafficLightVisualizerConfiguration.serviceOptions.port,
         baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
