@@ -31,41 +31,40 @@ export namespace Services {
                 onArduinoIsReady);
         }
 
-        public startOrStopPomodoroFor(user: TrafficLightVisualizerPlugin.User): void {
-            if (this.timers[user] === null)
-                this.startPomodoro(user);
+        public startOrStopPomodoro(): void {
+            if (this.timers.pomodoroTimer === null)
+                this.startPomodoro();
             else
-                this.stopPomodoro(user);
+                this.stopPomodoro();
         }
 
-        private startPomodoro(user: TrafficLightVisualizerPlugin.User): void {
-            this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightVisualizerPlugin.TrafficLightStatus.Red);
+        private startPomodoro(): void {
+            this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugin.TrafficLightStatus.Red);
 
-            this.timers[user] = setTimeout(() => {
-                this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightVisualizerPlugin.TrafficLightStatus.Yellow);
+            this.timers.pomodoroTimer = setTimeout(() => {
+                this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugin.TrafficLightStatus.Yellow);
 
-                if (this.timers[user] === null)
+                if (this.timers.pomodoroTimer === null)
                     return;
 
-                this.timers[user] = setTimeout(() => {
-                    this.stopPomodoro(user);
+                this.timers.pomodoroTimer = setTimeout(() => {
+                    this.stopPomodoro();
                     NodeNotifier.notify({ title: "Pomodoro Traffic Light", message: this.pomodoroIsOverMessage });
                 }, this.timeoutForReachingGreen);
             }, this.timeoutForReachingYellow);
         }
 
-        private stopPomodoro(user: TrafficLightVisualizerPlugin.User): void {
-            if (this.timers[user] !== null) {
-                clearTimeout(this.timers[user] as NodeJS.Timer);
-                this.timers[user] = null;
+        private stopPomodoro(): void {
+            if (this.timers.pomodoroTimer !== null) {
+                clearTimeout(this.timers.pomodoroTimer as NodeJS.Timer);
+                this.timers.pomodoroTimer = null;
             }
 
-            this.trafficLightVisualizerPlugin.setTrafficLightFor(user, TrafficLightVisualizerPlugin.TrafficLightStatus.Green);
+            this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugin.TrafficLightStatus.Green);
         }
     }
 
     class Timers {
-        [TrafficLightVisualizerPlugin.User.First]: NodeJS.Timer | null = null;
-        [TrafficLightVisualizerPlugin.User.Second]: NodeJS.Timer | null = null;
+        public pomodoroTimer: NodeJS.Timer | null = null;
     }
 }
