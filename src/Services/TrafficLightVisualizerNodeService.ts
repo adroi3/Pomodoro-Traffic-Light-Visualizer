@@ -1,5 +1,5 @@
-import { TrafficLightVisualizerService } from "../../support/api/TrafficLightVisualizerService";
-import { TrafficLightVisualizerPlugin } from "../../support/api/TrafficLightVisualizerPlugin";
+import { TrafficLightVisualizerService } from "../Api/TrafficLightVisualizerService";
+import { TrafficLightVisualizerPlugin } from "../Api/TrafficLightVisualizerPlugin";
 import * as NodeNotifier from "node-notifier";
 
 export namespace Services {
