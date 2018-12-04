@@ -28,7 +28,7 @@ export namespace Services {
             breakIsOverMessage: string,
             pluginOptions: TOptions,
             onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady): void {
-            
+
             this.trafficLightVisualizerPlugin = trafficLightVisualizerPlugin;
             this.timeoutForReachingYellow = timeoutForReachingYellow;
             this.timeoutForReachingGreen = timeoutForReachingGreen;
@@ -45,35 +45,20 @@ export namespace Services {
         }
 
         public startOrStopPomodoro(): void {
-            if (this.timers.breakTimer !== null)
-                return;
 
-            if (this.timers.pomodoroTimer === null)
+            if (this.timers.pomodoroTimer === null) {
+                this.stopBreak();
                 this.startPomodoro();
-            else
+            }
+            else {
                 this.stopPomodoro();
+            }
         }
 
         private startPomodoro(): void {
             this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugin.TrafficLightStatus.Red);
 
-            this.timers.pomodoroTimer = setTimeout(() => {
-                this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugin.TrafficLightStatus.Yellow);
-
-                if (this.timers.pomodoroTimer === null)
-                    return;
-
-                NodeNotifier.notify({ title: "Pomodoro Traffic Light", message: this.pomodoroIsAlmostOverMessage });
-
-                this.timers.pomodoroTimer = setTimeout(() => {
-                    this.stopPomodoro();
-
-                    NodeNotifier.notify({ title: "Pomodoro Traffic Light", message: this.pomodoroIsOverMessage });
-
-                    this.startBreak();
-
-                }, this.timeoutForReachingGreen);
-            }, this.timeoutForReachingYellow);
+            this.timers.pomodoroTimer = setTimeout(() => this.ReachYellow(), this.timeoutForReachingYellow);
         }
 
         private stopPomodoro(): void {
@@ -85,23 +70,53 @@ export namespace Services {
             this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugin.TrafficLightStatus.Green);
         }
 
+        private ReachYellow(): void {
+            this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugin.TrafficLightStatus.Yellow);
+
+            this.notify(this.pomodoroIsAlmostOverMessage);
+
+            this.timers.pomodoroTimer = setTimeout(() => this.ReachGreen(), this.timeoutForReachingGreen);
+        }
+
+        private ReachGreen(): void {
+            this.stopPomodoro();
+
+            this.notify(this.pomodoroIsOverMessage);
+
+            this.startBreak();
+        }
+
         private startBreak(): void {
             this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugin.BreakTrafficLightStatus.Red);
 
-            this.timers.breakTimer = setTimeout(() => {
-            
-                this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugin.BreakTrafficLightStatus.Green);
+            this.timers.breakTimer = setTimeout(() => this.reachEndOfBreak(), this.timeoutForReachingEndOfBreak);
+        }
 
-                NodeNotifier.notify({ title: "Pomodoro Traffic Light", message: this.breakIsOverMessage });
+        private stopBreak(): void {
+            if (this.timers.breakTimer !== null) {
+                clearTimeout(this.timers.breakTimer as NodeJS.Timer);
+                this.timers.breakTimer = null;
+            }
 
-                this.timers.breakTimer = setTimeout(() => {
-                    
-                    this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugin.BreakTrafficLightStatus.Nothing);
+            this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugin.BreakTrafficLightStatus.Nothing);
+        }
 
-                    this.timers.breakTimer = null;
+        private reachEndOfBreak(): void {
+            this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugin.BreakTrafficLightStatus.Green);
 
-                }, this.timeoutForStayingGreenWhenBreakEnded);
-            }, this.timeoutForReachingEndOfBreak);
+            this.notify(this.breakIsOverMessage);
+
+            this.timers.breakTimer = setTimeout(() => this.switchOffBreakTrafficLights(), this.timeoutForStayingGreenWhenBreakEnded);
+        }
+
+        private switchOffBreakTrafficLights(): void {
+            this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugin.BreakTrafficLightStatus.Nothing);
+
+            this.timers.breakTimer = null;
+        }
+
+        private notify(message: string): void {
+            NodeNotifier.notify({ title: "Pomodoro Traffic Light", message: message });
         }
     }
 
