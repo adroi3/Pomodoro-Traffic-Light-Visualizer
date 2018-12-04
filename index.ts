@@ -1,4 +1,4 @@
-import { Plugins } from "./src/Plugins/TrafficLightVisualizerArduinoPlugin";
+import { Plugins } from "./src/Plugins/Arduino/TrafficLightVisualizerArduinoPlugin";
 
 import { Services } from "./src/Services/TrafficLightVisualizerNodeService";
 
