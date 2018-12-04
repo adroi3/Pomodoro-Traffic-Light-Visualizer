@@ -1,0 +1,6 @@
+// {type:activity}
+// {generate:true}
+(start)->(Press Button)->(Forward Press To Computer)-><d1>[Not in pomodoro]->(Start Pomodoro)
+<d1>[In pomodoro]->(Stop Pomodoro)->(end)
+(Start Pomodoro)->(Start Timer)
+(Start Timer)->(Stop Timer)->(Start Break Timer)->(Stop Break Timer)->(Stop Pomodoro)
