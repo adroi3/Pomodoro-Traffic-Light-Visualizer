@@ -63,3 +63,7 @@ typings/
 #TypeScript output folder
 **/ts_output/**/*.js
 **/ts_output/**/*.map
+
+#vscode
+.vscode/arduino.json
+.vscode/c_cpp_properties.json
