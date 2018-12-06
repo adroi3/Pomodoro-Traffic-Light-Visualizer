@@ -70,3 +70,6 @@ typings/
 
 #yuml
 diagrams/*.svg
+
+#Arduino
+servers/**/output
