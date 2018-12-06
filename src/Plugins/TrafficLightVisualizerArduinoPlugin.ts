@@ -222,6 +222,24 @@ export class TrafficLightVisualizerArduinoPlugin implements TrafficLightVisualiz
         return outgoingMessages;
     }
 
+    private writeDebuggingInformationToInternalBuffer(incomingMessage: number, completeMessage: number[], buffer: Buffer): boolean {
+        if (incomingMessage !== ArduinoIncommingMessage.ARDUNIO_IS_READY
+            && incomingMessage !== ArduinoIncommingMessage.BUTTON_CLICKED
+            && completeMessage.length % 2 !== 0) {
+            for (let i = 0; i < buffer.byteLength; i++) {
+                const nextInternalBufferMessage = buffer.readInt8(i);
+
+                console.log(`Internal buffer will be filled with ${nextInternalBufferMessage}`);
+
+                this.internalBuffer.push(nextInternalBufferMessage);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     private fetchMessagesFromArduino(): void {
         this.serialPort.on('data', data => {
 
@@ -243,19 +261,8 @@ export class TrafficLightVisualizerArduinoPlugin implements TrafficLightVisualiz
 
             const incomingMessage = completeMessage[0];
 
-            if (incomingMessage !== ArduinoIncommingMessage.ARDUNIO_IS_READY
-                && incomingMessage !== ArduinoIncommingMessage.BUTTON_CLICKED
-                && completeMessage.length % 2 !== 0) {
-                for (let i = 0; i < buffer.byteLength; i++) {
-                    const nextInternalBufferMessage = buffer.readInt8(i);
-
-                    console.log(`Internal buffer will be filled with ${nextInternalBufferMessage}`);
-
-                    this.internalBuffer.push(nextInternalBufferMessage);
-                }
-
+            if (this.writeDebuggingInformationToInternalBuffer(incomingMessage, completeMessage, buffer))
                 return;
-            }
 
             const currentDateNow = Date.now();
 

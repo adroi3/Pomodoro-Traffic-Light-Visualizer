@@ -36,7 +36,7 @@ void setup()
   pinMode(GREEN_4, OUTPUT);
   pinMode(BUTTON_CLICKED, INPUT_PULLUP);
 
-  Timer1.initialize(0.1 * 100000); //Mikrosekunden (0.1 = Sekunden)
+  Timer1.initialize(0.1 * 100000); //Microseconds (0.1 = Seconds)
   Timer1.attachInterrupt(timerTick);
 
   Serial.begin(115200);

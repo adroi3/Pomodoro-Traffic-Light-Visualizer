@@ -1,5 +1,4 @@
 import * as Plugins from "./src/Plugins/PluginsNamespace";
-
 import * as Services from "./src/Services/ServicesNamespace";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
@@ -12,8 +11,8 @@ const trafficLightVisualizerPlugin = new Plugins.TrafficLightVisualizerArduinoPl
 
 trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMilliseconds,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMilliseconds,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen,
     trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreak,
     trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEnded,
     trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,

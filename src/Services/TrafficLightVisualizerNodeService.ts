@@ -1,5 +1,6 @@
 import * as TrafficLightVisualizerService from "../Api/TrafficLightVisualizerService/TrafficLightVisualizerServiceNamespace";
 import * as TrafficLightVisualizerPlugin from "../Api/TrafficLightVisualizerPlugin/TrafficLightVisualizerPluginNamespace";
+
 import * as NodeNotifier from "node-notifier";
 
 export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLightVisualizerService.TrafficLightVisualizerService<TOptions> {
