@@ -1,1 +1,0 @@
-export { TrafficLightVisualizerNodeService } from "./TrafficLightVisualizerNodeService";
