@@ -31,8 +31,7 @@ export class TrafficLightVisualizerArduinoPlugin implements TrafficLightVisualiz
     public setTrafficLight(trafficLightStatus: TrafficLightVisualizerPlugin.TrafficLightStatus): void {
         let outgoingMessages: ArduinoOutgoingMessage[];
 
-        outgoingMessages = this.createOutgoingMessagesForFirstPanelWith(trafficLightStatus)
-            .concat(this.createOutgoingMessagesForSecondPanelWith(trafficLightStatus));
+        outgoingMessages = this.createOutgoingMessagesForPomodoroPanelWith(trafficLightStatus);
 
         outgoingMessages.forEach(x => this.serialPort.write([x.trafficLightNumber, x.trafficLightStatus]));
     }
@@ -92,72 +91,7 @@ export class TrafficLightVisualizerArduinoPlugin implements TrafficLightVisualiz
         return outgoingMessages;
     }
 
-    private createOutgoingMessagesForFirstPanelWith(trafficLightStatus: TrafficLightVisualizerPlugin.TrafficLightStatus): ArduinoOutgoingMessage[] {
-        const outgoingMessages: ArduinoOutgoingMessage[] = [];
-
-        switch (trafficLightStatus) {
-            case TrafficLightVisualizerPlugin.TrafficLightStatus.Green:
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.RED_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.OFF,
-                });
-
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.YELLOW_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.OFF,
-                });
-
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.GREEN_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.ON,
-                });
-
-                break;
-
-            case TrafficLightVisualizerPlugin.TrafficLightStatus.Yellow:
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.RED_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.OFF,
-                });
-
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.GREEN_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.OFF,
-                });
-
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.YELLOW_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.ON,
-                });
-
-                break;
-
-            case TrafficLightVisualizerPlugin.TrafficLightStatus.Red:
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.YELLOW_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.OFF,
-                });
-
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.GREEN_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.OFF,
-                });
-
-                outgoingMessages.push({
-                    trafficLightNumber: ArduinoTrafficLightNumber.RED_1,
-                    trafficLightStatus: ArduinoTrafficLightStatus.ON,
-                });
-
-                break;
-
-            default:
-                break;
-        }
-
-        return outgoingMessages;
-    }
-
-    private createOutgoingMessagesForSecondPanelWith(trafficLightStatus: TrafficLightVisualizerPlugin.TrafficLightStatus): ArduinoOutgoingMessage[] {
+    private createOutgoingMessagesForPomodoroPanelWith(trafficLightStatus: TrafficLightVisualizerPlugin.TrafficLightStatus): ArduinoOutgoingMessage[] {
         const outgoingMessages: ArduinoOutgoingMessage[] = [];
 
         switch (trafficLightStatus) {
