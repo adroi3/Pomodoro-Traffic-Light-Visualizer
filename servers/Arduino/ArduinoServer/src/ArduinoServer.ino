@@ -48,11 +48,11 @@ void loop()
 {
   if (Serial.available() > 1)
   {
-    SetLight(Serial.read(), Serial.read());
+    setLight(Serial.read(), Serial.read());
   }
 }
 
-void SetLight(byte trafficLightState, byte trafficLightNumber)
+void setLight(byte trafficLightState, byte trafficLightNumber)
 {
   // Was used for debugging
   // Serial.write(trafficLightNumber);
@@ -70,4 +70,3 @@ void timerTick()
      Serial.write(BUTTON_CLICKED);
   }
 }
-
