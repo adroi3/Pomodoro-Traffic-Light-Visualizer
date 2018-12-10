@@ -24,16 +24,6 @@
 
 void setup()
 {
-  pinMode(RED_1, OUTPUT);
-  pinMode(YELLOW_1, OUTPUT);
-  pinMode(GREEN_1, OUTPUT);
-  pinMode(RED_2, OUTPUT);
-  pinMode(YELLOW_2, OUTPUT);
-  pinMode(GREEN_2, OUTPUT);
-  pinMode(RED_3, OUTPUT);
-  pinMode(GREEN_3, OUTPUT);
-  pinMode(RED_4, OUTPUT);
-  pinMode(GREEN_4, OUTPUT);
   pinMode(BUTTON_CLICKED, INPUT_PULLUP);
 
   Timer1.initialize(0.1 * 100000); //Microseconds (0.1 = Seconds)
@@ -58,7 +48,14 @@ void setLight(byte trafficLightState, byte trafficLightNumber)
   // Serial.write(trafficLightNumber);
   // Serial.write(trafficLightState);
 
-  digitalWrite(trafficLightNumber, trafficLightState);
+  int trafficLightOutput = 0;
+
+  if (trafficLightState == HIGH)
+    trafficLightOutput = 1;
+  else
+    trafficLightOutput = 0;
+
+  analogWrite(trafficLightNumber, trafficLightOutput);
 }
 
 void timerTick()
