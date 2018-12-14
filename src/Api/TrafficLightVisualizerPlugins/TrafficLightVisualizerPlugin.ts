@@ -1,7 +1,7 @@
 import { BreakTrafficLightStatus } from "./BreakTrafficLightStatus";
 import { TrafficLightStatus } from "./TrafficLightStatus";
 import { OnArduinoIsReady } from "./OnArduinoIsReady";
-import * as TrafficLightVisualizerService from "../TrafficLightVisualizerService/TrafficLightVisualizerServiceNamespace";
+import * as TrafficLightVisualizerService from "../TrafficLightVisualizerServices/TrafficLightVisualizerServicesNamespace";
 
 export interface TrafficLightVisualizerPlugin<TOptions> {
     setBreakTrafficLight(

@@ -51,7 +51,7 @@ void setLight(byte trafficLightState, byte trafficLightNumber)
   int trafficLightOutput = 0;
 
   if (trafficLightState == HIGH)
-    trafficLightOutput = 1;
+    trafficLightOutput = 255;
   else
     trafficLightOutput = 0;
 

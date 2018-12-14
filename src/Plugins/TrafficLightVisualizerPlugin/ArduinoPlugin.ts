@@ -1,14 +1,14 @@
-import * as TrafficLightVisualizerPlugin from "../Api/TrafficLightVisualizerPlugin/TrafficLightVisualizerPluginNamespace";
-import * as TrafficLightVisualizerService from "../Api/TrafficLightVisualizerService/TrafficLightVisualizerServiceNamespace";
-import { TrafficLightVisualizerArduinoPluginOptions } from "./TrafficLightVisualizerArduinoPluginOptions";
+import * as TrafficLightVisualizerPlugin from "../../Api/TrafficLightVisualizerPlugins/TrafficLightVisualizerPluginsNamespace";
+import * as TrafficLightVisualizerService from "../../Api/TrafficLightVisualizerServices/TrafficLightVisualizerServicesNamespace";
+import { ArduinoOptions } from "./ArduinoOptions";
 
 import * as SerialPort from "serialport";
 
-export class TrafficLightVisualizerArduinoPlugin implements TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<TrafficLightVisualizerArduinoPluginOptions> {
+export class ArduinoPlugin implements TrafficLightVisualizerPlugin.TrafficLightVisualizerPlugin<ArduinoOptions> {
 
     private readonly timeoutForReEnablingButton = 1000;
 
-    private trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<TrafficLightVisualizerArduinoPluginOptions>;
+    private trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<ArduinoOptions>;
     private serialPort: SerialPort;
     private previousDateNow: number = Date.now();
     private internalBuffer: number[] = [];
@@ -17,8 +17,8 @@ export class TrafficLightVisualizerArduinoPlugin implements TrafficLightVisualiz
     private onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady;
 
     public startsWith(
-        trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<TrafficLightVisualizerArduinoPluginOptions>,
-        options: TrafficLightVisualizerArduinoPluginOptions,
+        trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<ArduinoOptions>,
+        options: ArduinoOptions,
         onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady): void {
 
         this.trafficLightVisualizerService = trafficLightVisualizerService;

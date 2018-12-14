@@ -1,13 +1,14 @@
-import * as Plugins from "./src/Plugins/PluginsNamespace";
+import * as TrafficLightVisualizerPlugins from "./src/Plugins/TrafficLightVisualizerPlugin/TrafficLightVisualizerPluginNamespace";
 import * as Services from "./src/Services/ServicesNamespace";
+import * as TrafficLightVisualizerCommunicationPlugins from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
 
 const trafficLightVisualizerConfiguration = new TrafficLightVisualizerConfiguration();
 
-const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService<Plugins.TrafficLightVisualizerArduinoPluginOptions>();
+const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>();
 
-const trafficLightVisualizerPlugin = new Plugins.TrafficLightVisualizerArduinoPlugin();
+const trafficLightVisualizerPlugin = new TrafficLightVisualizerPlugins.ArduinoPlugin();
 
 trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
@@ -23,3 +24,11 @@ trafficLightVisualizerService.startsWith(
         baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
     },
     () => console.log("Traffic light visualizer started"));
+
+// Testcode
+
+const slackPlugin = new TrafficLightVisualizerCommunicationPlugins.SlackPlugin();
+
+slackPlugin.startsWith({
+    token: process.env.SLACK_TOKEN as string,
+});
