@@ -1,6 +1,6 @@
-export interface TrafficLightVisualizerCommunicationPlugin<TOptions> {
+export interface TrafficLightVisualizerCommunicationPlugin {
     onPomodoroStarted(): void;
     onPomodoroAlmostOver(): void;
     onPomodoroOver(): void;
-    startsWith(options: TOptions): void;
+    onBreakOver(): void;
 }

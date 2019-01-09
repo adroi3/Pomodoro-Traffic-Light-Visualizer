@@ -1,8 +1,9 @@
 import * as TrafficLightVisualizerPlugins from "../TrafficLightVisualizerPlugins/TrafficLightVisualizerPluginsNamespace";
+import * as TrafficLightVisualizerCommunicationPlugins from "../TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
 
-export interface TrafficLightVisualizerService<TOptions> {
+export interface TrafficLightVisualizerService<TPluginOptions> {
         startsWith(
-            trafficLightVisualizerPlugin: TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TOptions>,
+            trafficLightVisualizerPlugin: TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>,
             timeoutForReachingYellow: number,
             timeoutForReachingGreen: number,
             timeoutForReachingEndOfBreak: number,
@@ -10,8 +11,9 @@ export interface TrafficLightVisualizerService<TOptions> {
             pomodoroIsOverMessage: string,
             pomodoroIsAlmostOverMessage: string,
             breakIsOverMessage: string,
-            pluginOptions: TOptions,
-            onArduinoIsReady: TrafficLightVisualizerPlugins.OnArduinoIsReady): void;
+            pluginOptions: TPluginOptions,
+            onArduinoIsReady: TrafficLightVisualizerPlugins.OnArduinoIsReady,
+            trafficLightVisualizerCommunicationPlugins: TrafficLightVisualizerCommunicationPlugins.TrafficLightVisualizerCommunicationPlugin[]): void;
 
         startOrStopPomodoro(): void;
 }

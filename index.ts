@@ -1,6 +1,7 @@
 import * as TrafficLightVisualizerPlugins from "./src/Plugins/TrafficLightVisualizerPlugin/TrafficLightVisualizerPluginNamespace";
 import * as Services from "./src/Services/ServicesNamespace";
 import * as TrafficLightVisualizerCommunicationPlugins from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
+import { TrafficLightVisualizerCommunicationPlugin } from "./src/Api/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
 
@@ -9,6 +10,8 @@ const trafficLightVisualizerConfiguration = new TrafficLightVisualizerConfigurat
 const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>();
 
 const trafficLightVisualizerPlugin = new TrafficLightVisualizerPlugins.ArduinoPlugin();
+
+const trafficLightVisualizerCommunicationPlugins = createCommunicationPlugins();
 
 trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
@@ -23,12 +26,19 @@ trafficLightVisualizerService.startsWith(
         port: trafficLightVisualizerConfiguration.serviceOptions.port,
         baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
     },
-    () => console.log("Traffic light visualizer started"));
+    () => console.log("Traffic light visualizer started"),
+    trafficLightVisualizerCommunicationPlugins);
 
-// Testcode
+function createCommunicationPlugins(): TrafficLightVisualizerCommunicationPlugin[] {
+    const trafficLightVisualizerCommunicationPlugins: TrafficLightVisualizerCommunicationPlugin[] = [];
 
-const slackPlugin = new TrafficLightVisualizerCommunicationPlugins.SlackPlugin();
+    const slackPlugin = new TrafficLightVisualizerCommunicationPlugins.SlackPlugin();
 
-slackPlugin.startsWith({
-    token: process.env.SLACK_TOKEN as string,
-});
+    slackPlugin.startsWith({
+        token: process.env.SLACK_TOKEN as string,
+    });
+
+    trafficLightVisualizerCommunicationPlugins.push(slackPlugin);
+
+    return trafficLightVisualizerCommunicationPlugins;
+}

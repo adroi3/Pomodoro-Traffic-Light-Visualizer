@@ -3,42 +3,45 @@ import { SlackOptions } from "./SlackOptions";
 import Axios from "axios";
 import * as QueryString from "query-string";
 
-export class SlackPlugin implements TrafficLightVisualizerCommunicationPlugins.TrafficLightVisualizerCommunicationPlugin<SlackOptions> {
+export class SlackPlugin implements TrafficLightVisualizerCommunicationPlugins.TrafficLightVisualizerCommunicationPlugin {
     private options: SlackOptions;
 
-    onPomodoroStarted(): void {
-        throw new Error("Method not implemented.");
-    }
-    
-    onPomodoroAlmostOver(): void {
-        throw new Error("Method not implemented.");
+    public onPomodoroStarted(): void {
+        this.setStatus("Pomodoro", ":tomato:");
     }
 
-    onPomodoroOver(): void {
-        throw new Error("Method not implemented.");
+    public onPomodoroAlmostOver(): void {
     }
 
-    startsWith(options: SlackOptions): void {
+    public onPomodoroOver(): void {
+        this.setStatus("", "");
+    }
+
+    public onBreakOver(): void {
+    }
+
+    public startsWith(options: SlackOptions): void {
         this.options = options;
-
-        Axios.post("https://slack.com/api/users.profile.set",
-        QueryString.stringify({
-            token: this.options.token,
-            profile: JSON.stringify({
-                "status_text": "Pomodoro",
-                "status_emoji": ":tomato:"
-            })
-        }), {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }).then(function(response) {
-            console.log("Set Slack status API response: %j", response.data);
-        })
-        .catch(function(error) {
-            console.error("Set Slack status error: %s", error);
-});
     }
 
+    private setStatus(statusText: string, statusEmoji: string): void {
+        Axios.post("https://slack.com/api/users.profile.set",
+            QueryString.stringify({
+                token: this.options.token,
+                profile: JSON.stringify({
+                    "status_text": statusText,
+                    "status_emoji": statusEmoji,
+                })
+            }), {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            }).then(function (response) {
+                console.log("Set Slack status API response: %j", response.data);
+            })
+            .catch(function (error) {
+                console.error("Set Slack status error: %s", error);
+            });
+    }
 
 }
