@@ -7,7 +7,8 @@ export class SlackPlugin implements TrafficLightVisualizerCommunicationPlugins.T
     private options: SlackOptions;
 
     public onPomodoroStarted(): void {
-        this.setStatus("Pomodoro", ":tomato:");
+        this.setStatus(this.options.statusText, this.options.statusEmoji);
+        this.startSnooze();
     }
 
     public onPomodoroAlmostOver(): void {
@@ -15,6 +16,7 @@ export class SlackPlugin implements TrafficLightVisualizerCommunicationPlugins.T
 
     public onPomodoroOver(): void {
         this.setStatus("", "");
+        this.endSnooze();
     }
 
     public onBreakOver(): void {
@@ -25,14 +27,40 @@ export class SlackPlugin implements TrafficLightVisualizerCommunicationPlugins.T
     }
 
     private setStatus(statusText: string, statusEmoji: string): void {
-        Axios.post("https://slack.com/api/users.profile.set",
-            QueryString.stringify({
+        this.callSlackServiceMethod(
+            "https://slack.com/api/users.profile.set",
+            {
                 token: this.options.token,
                 profile: JSON.stringify({
                     "status_text": statusText,
                     "status_emoji": statusEmoji,
-                })
-            }), {
+                }),
+            }
+        );
+    }
+
+    private startSnooze(): void {
+        this.callSlackServiceMethod(
+            "https://slack.com/api/dnd.setSnooze",
+            {
+                token: this.options.token,
+                num_minutes: this.options.snoozeTimeInMinutes,
+            }
+        );
+    }
+
+    private endSnooze(): void {
+        this.callSlackServiceMethod(
+            "https://slack.com/api/dnd.endSnooze",
+            {
+                token: this.options.token,
+            }
+        );
+    }
+
+    private callSlackServiceMethod(url: string, data: object): void {
+        Axios.post(url,
+            QueryString.stringify(data), {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
@@ -43,5 +71,4 @@ export class SlackPlugin implements TrafficLightVisualizerCommunicationPlugins.T
                 console.error("Set Slack status error: %s", error);
             });
     }
-
 }

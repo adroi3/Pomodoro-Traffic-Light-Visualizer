@@ -34,8 +34,15 @@ function createCommunicationPlugins(): TrafficLightVisualizerCommunicationPlugin
 
     const slackPlugin = new TrafficLightVisualizerCommunicationPlugins.SlackPlugin();
 
+    const completePomodoroTime = (trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow
+                                 + trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen)
+                                 / 1000 / 60;
+
     slackPlugin.startsWith({
         token: process.env.SLACK_TOKEN as string,
+        snoozeTimeInMinutes: completePomodoroTime,
+        statusText: "Pomodoro",
+        statusEmoji: ":tomato:",
     });
 
     trafficLightVisualizerCommunicationPlugins.push(slackPlugin);
