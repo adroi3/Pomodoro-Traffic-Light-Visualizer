@@ -51,7 +51,12 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
 
     public startOrStopPomodoro(): void {
 
-        if (this.timers.pomodoroTimer === null) {
+        if (!this.timers.isSwitchToBreakAllowed) {
+            this.timers.isSwitchToBreakAllowed = true;
+
+            this.reachGreen();
+        }
+        else if (this.timers.pomodoroTimer === null) {
             this.stopBreak();
             this.startPomodoro();
         }
@@ -64,7 +69,7 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
         this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Red);
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onPomodoroStarted());
 
-        this.timers.pomodoroTimer = setTimeout(() => this.ReachYellow(), this.timeoutForReachingYellow);
+        this.timers.pomodoroTimer = setTimeout(() => this.reachYellow(), this.timeoutForReachingYellow);
     }
 
     private stopPomodoro(): void {
@@ -77,19 +82,23 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onPomodoroOver());
     }
 
-    private ReachYellow(): void {
+    private reachYellow(): void {
         this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Yellow);
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onPomodoroAlmostOver());
 
         this.notify(this.pomodoroIsAlmostOverMessage);
 
-        this.timers.pomodoroTimer = setTimeout(() => this.ReachGreen(), this.timeoutForReachingGreen);
+        this.timers.pomodoroTimer = setTimeout(() => this.onPomodoroIsOver(), this.timeoutForReachingGreen);
     }
 
-    private ReachGreen(): void {
-        this.stopPomodoro();
+    private onPomodoroIsOver(): void {
+        this.timers.isSwitchToBreakAllowed = false;
 
         this.notify(this.pomodoroIsOverMessage);
+    }
+
+    private reachGreen(): void {
+        this.stopPomodoro();
 
         this.startBreak();
     }
@@ -130,6 +139,7 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
 }
 
 class Timers {
+    public isSwitchToBreakAllowed: boolean = true;
     public pomodoroTimer: NodeJS.Timer | null = null;
     public breakTimer: NodeJS.Timer | null = null;
 }

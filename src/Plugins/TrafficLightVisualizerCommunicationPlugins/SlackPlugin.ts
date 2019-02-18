@@ -64,8 +64,6 @@ export class SlackPlugin implements TrafficLightVisualizerCommunicationPlugins.T
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
-            }).then(function (response) {
-                console.log("Set Slack status API response: %j", response.data);
             })
             .catch(function (error) {
                 console.error("Set Slack status error: %s", error);
