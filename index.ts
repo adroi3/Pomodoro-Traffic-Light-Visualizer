@@ -15,10 +15,10 @@ const trafficLightVisualizerCommunicationPlugins = createCommunicationPlugins();
 
 trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreak,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEnded,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow * 1000 * 60,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen * 1000 * 60,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreak * 1000 * 60,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEnded * 1000,
     trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,
     trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsAlmostOverMessage,
     trafficLightVisualizerConfiguration.serviceOptions.breakIsOverMessage,
@@ -35,8 +35,7 @@ function createCommunicationPlugins(): TrafficLightVisualizerCommunicationPlugin
     const slackPlugin = new TrafficLightVisualizerCommunicationPlugins.SlackPlugin();
 
     const completePomodoroTime = (trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow
-                                 + trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen)
-                                 / 1000 / 60;
+                                 + trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen);
 
     slackPlugin.startsWith({
         token: process.env.SLACK_TOKEN as string,

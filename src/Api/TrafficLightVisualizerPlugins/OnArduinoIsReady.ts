@@ -1,3 +1,0 @@
-export interface OnArduinoIsReady {
-    (): void;
-}

@@ -1,4 +1,4 @@
 export { TrafficLightVisualizerPlugin } from "./TrafficLightVisualizerPlugin";
 export { BreakTrafficLightStatus } from "./BreakTrafficLightStatus";
-export { OnArduinoIsReady } from "./OnArduinoIsReady";
+export { OnIsReady as OnArduinoIsReady } from "./OnIsReady";
 export { TrafficLightStatus } from "./TrafficLightStatus";
