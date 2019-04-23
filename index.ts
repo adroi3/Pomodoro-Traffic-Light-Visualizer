@@ -3,7 +3,6 @@ import * as Services from "./src/Services/ServicesNamespace";
 import * as SlackNamespace from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Slack/SlackNamespace";
 import { TrafficLightVisualizerCommunicationPlugin } from "./src/Api/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
 import { WebServicePlugin } from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Webservice/WebServicePlugin";
-import { WebServiceOptions } from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Webservice/WebServiceOptions";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
 
@@ -31,8 +30,8 @@ trafficLightVisualizerService.startsWith(
     () => console.log("Traffic light visualizer started"),
     trafficLightVisualizerCommunicationPlugins);
 
-function createCommunicationPlugins(
-    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>)
+function createCommunicationPlugins<TOptions>(
+    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TOptions>)
     : TrafficLightVisualizerCommunicationPlugin[] {
     const trafficLightVisualizerCommunicationPlugins: TrafficLightVisualizerCommunicationPlugin[] = [];
 
@@ -59,9 +58,9 @@ function createSlackPlugin(completePomodoroDurationInMinutes: number)
     return slackPlugin;
 }
 
-function createWebservicePlugin(
+function createWebservicePlugin<TOptions>(
     completePomodoroDurationInMinutes: number,
-    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>)
+    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TOptions>)
     : TrafficLightVisualizerCommunicationPlugin {
     const webServicePlugin = new WebServicePlugin();
 
