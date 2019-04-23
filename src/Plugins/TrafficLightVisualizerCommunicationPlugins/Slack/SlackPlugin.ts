@@ -1,4 +1,4 @@
-import * as TrafficLightVisualizerCommunicationPlugins from "../../Api/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
+import * as TrafficLightVisualizerCommunicationPlugins from "../../../Api/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
 import { SlackOptions } from "./SlackOptions";
 import Axios from "axios";
 import * as QueryString from "query-string";

@@ -1,6 +1,6 @@
 import * as TrafficLightVisualizerPlugins from "./src/Plugins/TrafficLightVisualizerPlugin/TrafficLightVisualizerPluginNamespace";
 import * as Services from "./src/Services/ServicesNamespace";
-import * as TrafficLightVisualizerCommunicationPlugins from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
+import * as TrafficLightVisualizerCommunicationPlugins from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Slack/SlackNamespace";
 import { TrafficLightVisualizerCommunicationPlugin } from "./src/Api/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
@@ -34,8 +34,8 @@ function createCommunicationPlugins(): TrafficLightVisualizerCommunicationPlugin
 
     const slackPlugin = new TrafficLightVisualizerCommunicationPlugins.SlackPlugin();
 
-    const completePomodoroTime = (trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow
-                                 + trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen);
+    const completePomodoroTime = trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow
+                                 + trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen;
 
     slackPlugin.startsWith({
         token: process.env.SLACK_TOKEN as string,
