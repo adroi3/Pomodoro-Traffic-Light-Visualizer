@@ -1,7 +1,9 @@
 import * as TrafficLightVisualizerPlugins from "./src/Plugins/TrafficLightVisualizerPlugin/TrafficLightVisualizerPluginNamespace";
 import * as Services from "./src/Services/ServicesNamespace";
-import * as TrafficLightVisualizerCommunicationPlugins from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Slack/SlackNamespace";
+import * as SlackNamespace from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Slack/SlackNamespace";
 import { TrafficLightVisualizerCommunicationPlugin } from "./src/Api/TrafficLightVisualizerCommunicationPlugins/TrafficLightVisualizerCommunicationPluginsNamespace";
+import { WebServicePlugin } from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Webservice/WebServicePlugin";
+import { WebServiceOptions } from "./src/Plugins/TrafficLightVisualizerCommunicationPlugins/Webservice/WebServiceOptions";
 
 import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerConfiguration"
 
@@ -11,14 +13,14 @@ const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeSer
 
 const trafficLightVisualizerPlugin = new TrafficLightVisualizerPlugins.ArduinoPlugin();
 
-const trafficLightVisualizerCommunicationPlugins = createCommunicationPlugins();
+const trafficLightVisualizerCommunicationPlugins = createCommunicationPlugins(trafficLightVisualizerService);
 
 trafficLightVisualizerService.startsWith(
     trafficLightVisualizerPlugin,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow * 1000 * 60,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen * 1000 * 60,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreak * 1000 * 60,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEnded * 1000,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMinutes * 1000 * 60,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMinutes * 1000 * 60,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreakInMinutes * 1000 * 60,
+    trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEndedInSeconds * 1000,
     trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,
     trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsAlmostOverMessage,
     trafficLightVisualizerConfiguration.serviceOptions.breakIsOverMessage,
@@ -29,22 +31,46 @@ trafficLightVisualizerService.startsWith(
     () => console.log("Traffic light visualizer started"),
     trafficLightVisualizerCommunicationPlugins);
 
-function createCommunicationPlugins(): TrafficLightVisualizerCommunicationPlugin[] {
+function createCommunicationPlugins(
+    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>)
+    : TrafficLightVisualizerCommunicationPlugin[] {
     const trafficLightVisualizerCommunicationPlugins: TrafficLightVisualizerCommunicationPlugin[] = [];
 
-    const slackPlugin = new TrafficLightVisualizerCommunicationPlugins.SlackPlugin();
+    const completePomodoroDurationInMinutes = trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMinutes
+                                 + trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMinutes;
 
-    const completePomodoroTime = trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellow
-                                 + trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreen;
+    trafficLightVisualizerCommunicationPlugins.push(createSlackPlugin(completePomodoroDurationInMinutes));
+    trafficLightVisualizerCommunicationPlugins.push(createWebservicePlugin(completePomodoroDurationInMinutes, trafficLightVisualizerService))
+
+    return trafficLightVisualizerCommunicationPlugins;
+}
+
+function createSlackPlugin(completePomodoroDurationInMinutes: number)
+: TrafficLightVisualizerCommunicationPlugin {
+    const slackPlugin = new SlackNamespace.SlackPlugin();
 
     slackPlugin.startsWith({
         token: process.env.SLACK_TOKEN as string,
-        snoozeTimeInMinutes: completePomodoroTime,
+        snoozeTimeInMinutes: completePomodoroDurationInMinutes,
         statusText: "Pomodoro",
         statusEmoji: ":tomato:",
     });
 
-    trafficLightVisualizerCommunicationPlugins.push(slackPlugin);
+    return slackPlugin;
+}
 
-    return trafficLightVisualizerCommunicationPlugins;
+function createWebservicePlugin(
+    completePomodoroDurationInMinutes: number,
+    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>)
+    : TrafficLightVisualizerCommunicationPlugin {
+    const webServicePlugin = new WebServicePlugin();
+
+    webServicePlugin.startsWith({
+        durationInMinutes: completePomodoroDurationInMinutes,
+        trafficLightVisualizerService: trafficLightVisualizerService,
+    });
+
+    webServicePlugin.startServer();
+
+    return webServicePlugin;
 }

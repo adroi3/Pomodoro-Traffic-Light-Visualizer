@@ -18,11 +18,15 @@
   "homepage": "https://github.com/pomodoro-traffic-light-visualizer/node-pomodoro-traffic-light-visualizer-service#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
     "node-notifier": "^5.3.0",
     "query-string": "^6.2.0",
     "serialport": "^6.2.0"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/express": "^4.16.1",
     "@types/node": "^10.3.1",
     "@types/node-notifier": "0.0.28",
     "@types/query-string": "^6.1.1",
