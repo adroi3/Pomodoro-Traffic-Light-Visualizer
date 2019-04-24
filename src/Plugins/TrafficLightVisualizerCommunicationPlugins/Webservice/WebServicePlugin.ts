@@ -23,7 +23,7 @@ export class WebServicePlugin<TPluginOptions> implements TrafficLightVisualizerC
 
             this.options.trafficLightVisualizerService.startOrStopPomodoro();
 
-            res.send(200);
+            res.sendStatus(200);
         });
 
         server.listen(port, () => console.log(`Express server listening on port ${port}`));
