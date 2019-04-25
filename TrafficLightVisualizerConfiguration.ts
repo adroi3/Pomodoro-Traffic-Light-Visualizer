@@ -9,6 +9,6 @@ export class TrafficLightVisualizerConfiguration {
         pomodoroIsAlmostOverMessage: "Pomdoro is almost over",
         pomodoroIsOverMessage: "Pomodoro is over",
         breakIsOverMessage: "Break is over",
-        withTrafficLightPlugin: false,
+        withTrafficLightPlugin: true,
     }
 }
