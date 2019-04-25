@@ -30,14 +30,18 @@ export class WebServicePlugin<TPluginOptions> implements TrafficLightVisualizerC
     }
 
     public onPomodoroStarted(): void {
+        console.log("Pomodoro started");
     }
 
     public onPomodoroAlmostOver(): void {
+        console.log("Pomodoro almost over");
     }
 
     public onPomodoroOver(): void {
+        console.log("Pomodoro over");
     }
 
     public onBreakOver(): void {
+        console.log("Pomodoro break over");
     }
 }
