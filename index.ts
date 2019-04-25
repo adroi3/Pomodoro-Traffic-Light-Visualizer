@@ -8,30 +8,57 @@ import { TrafficLightVisualizerConfiguration } from "./TrafficLightVisualizerCon
 
 const trafficLightVisualizerConfiguration = new TrafficLightVisualizerConfiguration();
 
-const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>();
+if (trafficLightVisualizerConfiguration.serviceOptions.withTrafficLightPlugin) {
+    initializeWithTrafficLightPlugin();
+} else if (!trafficLightVisualizerConfiguration.serviceOptions.withTrafficLightPlugin) {
+    initializeWithoutTrafficLightPlugin();
+}
 
-const trafficLightVisualizerPlugin = new TrafficLightVisualizerPlugins.ArduinoPlugin();
+function initializeWithTrafficLightPlugin(): void {
+    const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService<TrafficLightVisualizerPlugins.ArduinoOptions>();
 
-const trafficLightVisualizerCommunicationPlugins = createCommunicationPlugins(trafficLightVisualizerService);
+    const trafficLightVisualizerPlugin = new TrafficLightVisualizerPlugins.ArduinoPlugin();
+    
+    const trafficLightVisualizerCommunicationPlugins = createCommunicationPlugins(trafficLightVisualizerService);
+    
+    trafficLightVisualizerService.startsWith(
+        trafficLightVisualizerPlugin,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMinutes * 1000 * 60,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMinutes * 1000 * 60,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreakInMinutes * 1000 * 60,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEndedInSeconds * 1000,
+        trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,
+        trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsAlmostOverMessage,
+        trafficLightVisualizerConfiguration.serviceOptions.breakIsOverMessage,
+        {
+            port: trafficLightVisualizerConfiguration.serviceOptions.port,
+            baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
+        },
+        () => console.log("Traffic light visualizer plugin started"),
+        trafficLightVisualizerCommunicationPlugins);
+}
 
-trafficLightVisualizerService.startsWith(
-    trafficLightVisualizerPlugin,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMinutes * 1000 * 60,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMinutes * 1000 * 60,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreakInMinutes * 1000 * 60,
-    trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEndedInSeconds * 1000,
-    trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,
-    trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsAlmostOverMessage,
-    trafficLightVisualizerConfiguration.serviceOptions.breakIsOverMessage,
-    {
-        port: trafficLightVisualizerConfiguration.serviceOptions.port,
-        baudRate: trafficLightVisualizerConfiguration.serviceOptions.baudRate,
-    },
-    () => console.log("Traffic light visualizer started"),
-    trafficLightVisualizerCommunicationPlugins);
+function initializeWithoutTrafficLightPlugin(): void {
+    const trafficLightVisualizerService = new Services.TrafficLightVisualizerNodeService<null>();
+    
+    const trafficLightVisualizerCommunicationPlugins = createCommunicationPlugins(trafficLightVisualizerService);
+    
+    trafficLightVisualizerService.startsWith(
+        null,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingYellowInMinutes * 1000 * 60,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingGreenInMinutes * 1000 * 60,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForReachingEndOfBreakInMinutes * 1000 * 60,
+        trafficLightVisualizerConfiguration.serviceOptions.timeoutForStayingGreenWhenBreakEndedInSeconds * 1000,
+        trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsOverMessage,
+        trafficLightVisualizerConfiguration.serviceOptions.pomodoroIsAlmostOverMessage,
+        trafficLightVisualizerConfiguration.serviceOptions.breakIsOverMessage,
+        null,
+        null,
+        trafficLightVisualizerCommunicationPlugins);
+}
 
-function createCommunicationPlugins<TOptions>(
-    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TOptions>)
+function createCommunicationPlugins<TPluginOptions>(
+    trafficLightVisualizerService: Services.TrafficLightVisualizerNodeService<TPluginOptions>)
     : TrafficLightVisualizerCommunicationPlugin[] {
     const trafficLightVisualizerCommunicationPlugins: TrafficLightVisualizerCommunicationPlugin[] = [];
 

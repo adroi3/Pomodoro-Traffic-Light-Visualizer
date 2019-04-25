@@ -14,12 +14,12 @@ export class ArduinoPlugin implements TrafficLightVisualizerPlugin.TrafficLightV
     private internalBuffer: number[] = [];
     private buttonClickIsEnabled: boolean = true;
 
-    private onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady;
+    private onArduinoIsReady: TrafficLightVisualizerPlugin.OnIsReady;
 
     public startsWith(
         trafficLightVisualizerService: TrafficLightVisualizerService.TrafficLightVisualizerService<ArduinoOptions>,
         options: ArduinoOptions,
-        onArduinoIsReady: TrafficLightVisualizerPlugin.OnArduinoIsReady): void {
+        onArduinoIsReady: TrafficLightVisualizerPlugin.OnIsReady): void {
 
         this.trafficLightVisualizerService = trafficLightVisualizerService;
         this.serialPort = new SerialPort(options.port, { baudRate: options.baudRate });

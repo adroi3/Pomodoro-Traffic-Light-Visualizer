@@ -4,8 +4,8 @@ import * as TrafficLightVisualizerCommunicationPlugins from "../Api/TrafficLight
 
 import * as NodeNotifier from "node-notifier";
 
-export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLightVisualizerServices.TrafficLightVisualizerService<TOptions> {
-    private trafficLightVisualizerPlugin: TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TOptions>;
+export class TrafficLightVisualizerNodeService<TPluginOptions> implements TrafficLightVisualizerServices.TrafficLightVisualizerService<TPluginOptions> {
+    private trafficLightVisualizerPlugin: TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions> | null;
     private trafficLightVisualizerCommunicationPlugins: TrafficLightVisualizerCommunicationPlugins.TrafficLightVisualizerCommunicationPlugin[];
 
     private timeoutForReachingYellow: number;
@@ -21,7 +21,7 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
     
 
     public startsWith(
-        trafficLightVisualizerPlugin: TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TOptions>,
+        trafficLightVisualizerPlugin: TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions> | null,
         timeoutForReachingYellow: number,
         timeoutForReachingGreen: number,
         timeoutForReachingEndOfBreak: number,
@@ -29,8 +29,8 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
         pomodoroIsOverMessage: string,
         pomodoroIsAlmostOverMessage: string,
         breakIsOverMessage: string,
-        pluginOptions: TOptions,
-        onArduinoIsReady: TrafficLightVisualizerPlugins.OnArduinoIsReady,
+        pluginOptions: TPluginOptions | null,
+        onIsReady: TrafficLightVisualizerPlugins.OnIsReady | null,
         trafficLightVisualizerCommunicationPlugins: TrafficLightVisualizerCommunicationPlugins.TrafficLightVisualizerCommunicationPlugin[]): void {
 
         this.trafficLightVisualizerPlugin = trafficLightVisualizerPlugin;
@@ -43,10 +43,12 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
         this.breakIsOverMessage = breakIsOverMessage;
         this.trafficLightVisualizerCommunicationPlugins = trafficLightVisualizerCommunicationPlugins;
 
-        this.trafficLightVisualizerPlugin.startsWith(
-            this,
-            pluginOptions,
-            onArduinoIsReady);
+        if (pluginOptions !== null && onIsReady !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>).startsWith(
+                this,
+                pluginOptions,
+                onIsReady);
+        }
     }
 
     public startOrStopPomodoro(): void {
@@ -66,7 +68,13 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
     }
 
     private startPomodoro(): void {
-        this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Red);
+
+        if (this.trafficLightVisualizerPlugin !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>)
+            .setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Red);
+        }
+
+        this.trafficLightVisualizerPlugin
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onPomodoroStarted());
 
         this.timers.pomodoroTimer = setTimeout(() => this.reachYellow(), this.timeoutForReachingYellow);
@@ -78,12 +86,20 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
             this.timers.pomodoroTimer = null;
         }
 
-        this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Green);
+        if (this.trafficLightVisualizerPlugin !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>)
+            .setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Green);
+        }
+
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onPomodoroOver());
     }
 
     private reachYellow(): void {
-        this.trafficLightVisualizerPlugin.setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Yellow);
+        if (this.trafficLightVisualizerPlugin !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>)
+            .setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Yellow);
+        }
+
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onPomodoroAlmostOver());
 
         this.notify(this.pomodoroIsAlmostOverMessage);
@@ -104,7 +120,10 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
     }
 
     private startBreak(): void {
-        this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Red);
+        if (this.trafficLightVisualizerPlugin !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>)
+            .setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Red);
+        }
 
         this.timers.breakTimer = setTimeout(() => this.reachEndOfBreak(), this.timeoutForReachingEndOfBreak);
     }
@@ -115,12 +134,19 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
             this.timers.breakTimer = null;
         }
 
-        this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Nothing);
+        if (this.trafficLightVisualizerPlugin !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>)
+            .setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Nothing);
+        }
+
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onBreakOver());
     }
 
     private reachEndOfBreak(): void {
-        this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Green);
+        if (this.trafficLightVisualizerPlugin !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>)
+            .setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Green);
+        }
 
         this.notify(this.breakIsOverMessage);
 
@@ -128,7 +154,10 @@ export class TrafficLightVisualizerNodeService<TOptions> implements TrafficLight
     }
 
     private switchOffBreakTrafficLights(): void {
-        this.trafficLightVisualizerPlugin.setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Nothing);
+        if (this.trafficLightVisualizerPlugin !== null) {
+            (this.trafficLightVisualizerPlugin as TrafficLightVisualizerPlugins.TrafficLightVisualizerPlugin<TPluginOptions>)
+            .setBreakTrafficLight(TrafficLightVisualizerPlugins.BreakTrafficLightStatus.Nothing);
+        }
 
         this.timers.breakTimer = null;
     }
