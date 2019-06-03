@@ -74,7 +74,6 @@ export class TrafficLightVisualizerNodeService<TPluginOptions> implements Traffi
             .setTrafficLight(TrafficLightVisualizerPlugins.TrafficLightStatus.Red);
         }
 
-        this.trafficLightVisualizerPlugin
         this.trafficLightVisualizerCommunicationPlugins.forEach(x => x.onPomodoroStarted());
 
         this.timers.pomodoroTimer = setTimeout(() => this.reachYellow(), this.timeoutForReachingYellow);
