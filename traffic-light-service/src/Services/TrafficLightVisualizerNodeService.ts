@@ -59,7 +59,11 @@ export class TrafficLightVisualizerNodeService<TPluginOptions> implements Traffi
             this.reachGreen();
         }
         else if (this.timers.pomodoroTimer === null) {
-            this.stopBreak();
+
+            if (this.timers.breakTimer !== null) {
+                this.stopBreak();
+            }
+
             this.startPomodoro();
         }
         else {
